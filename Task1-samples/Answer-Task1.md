@@ -10,7 +10,7 @@
 ```python
 struct.unpack('<hhdddddddd', binf_single)
 ```
-![image](文件格式.png)
+![image](https://github.com/Magician0619/PET-Magician/blob/master/docs/image-storage/Task1-samples/%E5%8E%9F%E5%A7%8B%E6%95%B0%E6%8D%AE%E6%95%A3%E7%82%B9%E5%9B%BE.png)
 
 由于`6BDM.samples`文件过大，所以我们只对前10帧数据进行提取,可以得到以下的数据
 
@@ -31,7 +31,7 @@ struct.unpack('<hhdddddddd', binf_single)
 
 从获得的数据里面，我们对第一帧数据绘制散点图可以得到
 
-![image](原始数据散点图.png)
+![image](https://github.com/Magician0619/PET-Magician/blob/master/docs/image-storage/Task1-samples/%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F.png)
 
 这里面我们主要考虑三种曲线`多项式拟合`、`双指数拟合`、`高斯拟合`
 
