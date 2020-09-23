@@ -2,6 +2,12 @@
 
 中国科学技术大学/信息科学学院电子工程与信息科学系/信息与通信工程/PET实验室/Magician
 
+
+<!--[![Build Status](https://travis-ci.org/PaddlePaddle/Paddle-Lite.svg?branch=develop&longCache=true&style=flat-square)](https://travis-ci.org/PaddlePaddle/Paddle-Lite)-->
+[![Documentation Status](https://img.shields.io/badge/中文文档-最新-brightgreen.svg)](https://paddle-lite.readthedocs.io/zh/latest/)
+[![License](https://img.shields.io/badge/license-Apache%202-blue.svg)](LICENSE)
+<!-- [![Release](https://img.shields.io/github/release/PaddlePaddle/Paddle-Mobile.svg)](https://github.com/PaddlePaddle/Paddle-Mobile/releases) -->
+
 ## 训练项目
 
 ### Samples文件脉冲分析
