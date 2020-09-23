@@ -94,15 +94,20 @@ plt.show()
 ##########################################
 # 多项式拟合曲线
 ##########################################
-poly = np.polyfit(x,y,3)   # 用7次多项式拟合x，y数组
+poly = np.polyfit(x,y,5)   # 用5次多项式拟合x，y数组
 poly_func = np.poly1d(poly)    # 拟合完之后用这个函数来生成多项式对象
 y_poly = poly_func(x)    # 生成多项式对象之后，就是获取x在这个多项式处的值
 plt.figure("多项式曲线")
-plt.scatter(x,y,marker='o',label='original datas')#对原始数据画散点图
-plt.plot(x,y,ls='--',c='red',label='fitting with 4-degree polynomial')#对拟合之后的数据，也就是x，c数组画图
+plt.scatter(x,y,marker='o',label='original data')#对原始数据画散点图
+# plt.plot(x,y,ls='--',c='red',label='fitting with 4-degree polynomial')#对拟合之后的数据，也就是x，c数组画图
 c_inter = poly_func(x_inter)    # 插值数据进行绘图
-plt.plot(x_inter,c_inter,ls='--',c='green',label='Interpolation')#对拟合之后的数据，也就是x，c数组画图
+plt.plot(x_inter,c_inter,ls='--',c='green',label='fitting curve')#对拟合之后的数据，也就是x，c数组画图
+plt.xlabel('Time(ns)')
+plt.ylabel('Voltage(mv)')
+plt.legend(loc=1) # 指定legend的位置右下角
+plt.title('Polynomial fitting curve')
 plt.legend()
+
 
 plt.show()
 
