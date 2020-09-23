@@ -1,4 +1,4 @@
-@[TOC](闪烁脉冲信号处理任务)
+[TOC](闪烁脉冲信号处理任务)
 > 数据下载地址：链接: https://pan.baidu.com/s/1vlh6rLdmQAU_ePxIN7blDg  密码: flch
 > 
 > 数据的电压采样阈值为：V1=40、V2=110、V3=180、V4=270
@@ -10,7 +10,8 @@
 ```python
 struct.unpack('<hhdddddddd', binf_single)
 ```
-![image](https://github.com/Magician0619/PET-Magician/blob/master/docs/image-storage/Task1-samples/format.png)
+
+![image](https://s1.ax1x.com/2020/09/23/wxQVv4.png)
 
 由于`6BDM.samples`文件过大，所以我们只对前10帧数据进行提取,可以得到以下的数据
 
@@ -31,7 +32,7 @@ struct.unpack('<hhdddddddd', binf_single)
 
 从获得的数据里面，我们对第一帧数据绘制散点图可以得到
 
-![image](https://github.com/Magician0619/PET-Magician/blob/master/docs/image-storage/Task1-samples/scatter.png)
+![image](https://s1.ax1x.com/2020/09/23/wxQCEq.png)
 
 这里面我们主要考虑三种曲线`多项式拟合`、`双指数拟合`、`高斯拟合`
 
