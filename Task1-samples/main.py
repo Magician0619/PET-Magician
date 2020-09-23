@@ -17,10 +17,10 @@ import random
 import csv
 
 
-binFile = open('cy.samples','rb')
+binFile = open('E:\\PET\\数据集\\6BDM.samples','rb')
 poly = binFile.read()
 print("字节长度：",len(poly))
-cycle = int(len(poly)/67)+1
+cycle = int(len(poly)/68)+1
 print("帧数：",cycle-1)
 
 cycle = 10  # 分析前10组数据 
@@ -28,8 +28,8 @@ cycle = 10  # 分析前10组数据
 squares = []
 
 for i in range(cycle):
-    poly_func = poly[i*67:(i+1)*67]
-    y_poly = struct.unpack('<Bhdddddddd', poly_func)
+    poly_func = poly[i*68:(i+1)*68]
+    y_poly = struct.unpack('<hhdddddddd', poly_func)
     # print(c)
     for j in range(2,10): 
         squares.append(y_poly[j]-y_poly[2])
@@ -48,7 +48,7 @@ def double_exp(x,a,b,c,d,e,f):
 # 原始数据点散点绘图
 ##########################################
 # 定义原始数据x、y的散点坐标
-circle = 5
+circle = 1
 x = squares[0:8*circle]
 x = np.array(x)
 print('x的坐标:',x)
@@ -59,6 +59,10 @@ print('y的坐标:',y)
 
 plt.figure("原始数据散点图")
 plot1 = plt.plot(x, y, 's',label='original values')
+plt.xlabel('Time(ns)')
+plt.ylabel('Voltage(mv)')
+plt.legend(loc=1) # 指定legend的位置右下角
+plt.title('Sampling scatter diagram of scintillation pulse')
 
 popt, pcov = curve_fit(double_exp, x, y)
 '''

@@ -11,5 +11,9 @@
 ## 训练项目
 
 ### Samples文件脉冲分析
+
 时间：2020-09-23 17:39:54
+
 任务：基于Samples文件，用python编程，画出所有脉冲事件的能谱并计算能量分辨率。
+
+解答：[2020年9月23日 18:50:46](https://github.com/Magician0619/PET-Magician/blob/master/Task1-samples/Answer-Task1.md)

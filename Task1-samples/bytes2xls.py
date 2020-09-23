@@ -49,13 +49,13 @@ def convert(filename):
 
     squares = []
     for i in range (100):
-        binf_single = binf[i*67 : (i+1)*67]
-        content = struct.unpack('<Bhdddddddd', binf_single)
+        binf_single = binf[i*68 : (i+1)*68]
+        content = struct.unpack('<hhdddddddd', binf_single)
         for k in range(2):
             sheet1.write(i,k,content[k])       
         for j in range(2,10): 
             squares.append(content[j]-content[2])
             sheet1.write(i,j,content[j]-content[2])
 
-convert('cy.samples')
+convert('E:\\PET\\数据集\\6BDM.samples')
 f.save("save.xls") #保存文件
