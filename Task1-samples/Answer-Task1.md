@@ -37,6 +37,7 @@ struct.unpack('<hhdddddddd', binf_single)
 这里面我们主要考虑三种曲线`多项式拟合`、`双指数拟合`、`高斯拟合`
 
 1. 多项式拟合
+
 使用多项式曲线进行拟合,经过测试发现5次时拟合效果最佳
 ```python
 poly = np.polyfit(x,y,5) 
@@ -44,6 +45,20 @@ poly = np.polyfit(x,y,5)
 ![多项式曲线](https://s1.ax1x.com/2020/09/23/wxY1w4.png)
 
 2. 双指数拟合
+
+首先先定义函数的类型，可能会存在三种返回值
+
+```python
+def double_exp(x,a,b,c,d,e,f):
+    '''
+    双指数函数曲线
+    '''
+    return  a*np.exp(b*x)+c*np.exp(d*x)
+    # return  a*np.exp(b*x)+c*np.exp(d*x)+e
+    # return  a*np.exp(b*x)+c*np.exp(d*x)+e*x+f
+```
+在这里面我们首先模拟第一种，可以得到图像
+
 
 3. 高斯分布拟合 
 

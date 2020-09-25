@@ -1,3 +1,3 @@
-num = [40,110,180,270,270,180,110,40]
-w = 3*num
-print(w)
+from sympy import *
+x = symbols('x')
+print(integrate(x, (x, 1, 2)))

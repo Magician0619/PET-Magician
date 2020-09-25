@@ -14,7 +14,10 @@ from scipy.optimize import curve_fit
 import pandas as pd
 import math
 import random
-import csv
+from matplotlib.ticker import FuncFormatter
+from sympy import * 
+# import sympy.integrals.manualintegrate
+# from scipy.integrate import tplquad,dblquad,quad
 
 
 binFile = open('E:\\PET\\数据集\\6BDM.samples','rb')
@@ -35,20 +38,21 @@ for i in range(cycle):
         squares.append(y_poly[j]-y_poly[2])
         # print("时间差：",c[j]-c[2])
    
-def double_exp(x,a,b,c,d,e,f):
+# def double_exp(x,a,b,c,d,e,f):
+def double_exp(x,a,b,c,d):
     '''
     双指数函数曲线
     '''
+    return  a*np.exp(b*x)+c*np.exp(d*x)
     # return  a*np.exp(b*x)+c*np.exp(d*x)+e
-    # return  a*np.exp(b*x)+c*np.exp(d*x)
-    return  a*np.exp(b*x)+c*np.exp(d*x)+e*x+f
+    # return  a*np.exp(b*x)+c*np.exp(d*x)+e*x+f
 
 
 ##########################################
 # 原始数据点散点绘图
 ##########################################
 # 定义原始数据x、y的散点坐标
-circle = 1
+circle = 1  # 是否需要多组数据共同拟合曲线，增加曲线拟合的准确性
 x = squares[0:8*circle]
 x = np.array(x)
 print('x的坐标:',x)
@@ -57,38 +61,58 @@ num = [40,110,180,270,270,180,110,40]
 y = np.array(num*circle)
 print('y的坐标:',y)
 
+plt.rcParams['font.family'] = ['Times New Roman']
 plt.figure("原始数据散点图")
-plot1 = plt.plot(x, y, 's',label='original values')
+plt.plot(x, y, 's',label='original values')
 plt.xlabel('Time(ns)')
 plt.ylabel('Voltage(mv)')
-plt.legend(loc=1) # 指定legend的位置右下角
+plt.legend() 
 plt.title('Sampling scatter diagram of scintillation pulse')
 
-popt, pcov = curve_fit(double_exp, x, y)
+
+
+
+##########################################
+# 双指数曲线拟合
+##########################################
+global rate 
+rate = 1000 # 将单位进行放缩
+x_dexp = x/rate
+y_dexp = y/rate 
+popt, pcov = curve_fit(double_exp, x_dexp, y_dexp)
+# bounds=(-20,[0.01,0.01,0.01,0.01,0.01,0.01])
 '''
 # 曲线拟合，并得到拟合曲线相关系数
 # popt：阵列参数的最佳值，以使（扩展数据，*popt）-ydata平方残差之和最小
 # pcov：二维阵列popt的估计协方差，对角线提供参数估计的方差。
 # perr = np.sqrt(np.diag(pcov))，使用perr计算参数的一个标准偏差误差。
 '''
-# print("所得双指数函数形式为：%fexp(%f*x)+%fexp(%f*x)+%f"%(popt[0],popt[1],popt[2],popt[3],popt[4]))
+print("所得双指数函数形式为：%fexp(%f*x)+%fexp(%f*x)"%(popt[0],popt[1],popt[2],popt[3]))
 
-
-##########################################
 # 对数据进行插值，使得双指数曲线更加光滑
-##########################################
-x_inter = np.linspace(0,squares[7],1000)
-y_inter = double_exp(x_inter,popt[0],popt[1],popt[2],popt[3],popt[4],popt[5]) #拟合y值
+x_inter = np.linspace(0,x_dexp[7],1000)
+y_inter = double_exp(x_inter,popt[0],popt[1],popt[2],popt[3]) #拟合y值
 
-plt.figure("插值曲线")
-plot2 = plt.plot(x_inter, y_inter, 'r',label='polyfit values')
-'''
-plt.xlabel('x')
-plt.ylabel('y')
-plt.legend(loc=1) # 指定legend的位置右下角
-plt.title('curve_fit')
-plt.show()
-'''
+
+plt.rcParams['font.family'] = ['Times New Roman']
+# plt.rcParams.update({'font.size': 8})
+plt.figure("双指数插值曲线")
+plt.plot(x_inter, y_inter, 'r',label='polyfit values')
+# plt.plot(x, y, 's',label='original values')
+plt.title('Double exponential interpolation curve')
+plt.xlabel('Time(ns)')
+plt.ylabel('Voltage(mv)')
+# 放缩坐标轴
+
+def axis_scale(temp, position):
+    return '%1.0f'%(rate*temp)
+
+plt.gca().yaxis.set_major_formatter(FuncFormatter(axis_scale))
+plt.gca().xaxis.set_major_formatter(FuncFormatter(axis_scale))
+plt.legend() 
+
+
+
 
 
 ##########################################
@@ -99,21 +123,51 @@ poly_func = np.poly1d(poly)    # 拟合完之后用这个函数来生成多项�
 y_poly = poly_func(x)    # 生成多项式对象之后，就是获取x在这个多项式处的值
 plt.figure("多项式曲线")
 plt.scatter(x,y,marker='o',label='original data')#对原始数据画散点图
-# plt.plot(x,y,ls='--',c='red',label='fitting with 4-degree polynomial')#对拟合之后的数据，也就是x，c数组画图
 c_inter = poly_func(x_inter)    # 插值数据进行绘图
 plt.plot(x_inter,c_inter,ls='--',c='green',label='fitting curve')#对拟合之后的数据，也就是x，c数组画图
+plt.title('Polynomial fitting curve')
 plt.xlabel('Time(ns)')
 plt.ylabel('Voltage(mv)')
-plt.legend(loc=1) # 指定legend的位置右下角
-plt.title('Polynomial fitting curve')
-plt.legend()
+plt.legend() 
+
+
+
+
+
+
+##########################################
+# 计算脉冲积分，脉冲电压值对时间的积分
+# 蒙特卡洛方法
+##########################################
+
+'''
+x = symbols('x')
+E = integrate(popt[1]*np.exp(popt[2]*x)+popt[3]*np.exp(d*x), (x, 0, x_inter[-1]))
+# 似乎对指数无法求积分，待解决！！
+'''
+
+def monto(x,a,b):
+    """
+    # a,b为求取积分的上下限
+    """
+    return (b-a)/len(x)*sum(double_exp(x,popt[0],popt[1],popt[2],popt[3]))
+
+def integral(a,b):
+    """
+    # a,b为求取积分的上下限
+    """
+    return double_exp(b,popt[0],popt[1],popt[2],popt[3]) - double_exp(a,popt[0],popt[1],popt[2],popt[3])
+
+E = integral(0, x_inter[-1])*((rate)**2)
+
+print("积分结果：",E)
+
+
+
+
+
+
+
 
 
 plt.show()
-
-
-
-##########################################
-# 多项式拟合曲线
-##########################################
-
