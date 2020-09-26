@@ -1,6 +1,6 @@
-from scipy import integrate
-def f(x):
-    return x**2
-e = integrate.quad(f,1,2)
-print(e[0])  # quad方法会返回精确的值和误差
-input()
+import numpy as np
+a = [1,2,3]
+a = np.array(a)
+a = np.append(a,[1])
+a = np.delete(a,1)
+print(a)

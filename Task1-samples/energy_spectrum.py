@@ -34,7 +34,7 @@ print("字节长度：",len(poly))
 circle = int(len(poly)/68)+1
 print("帧数：",circle-1)
 
-circle = 100  # 分析前100组数据 
+circle = 10000  # 分析前100组数据 
 
 global rate 
 global popt
@@ -82,7 +82,7 @@ for i in range(circle):
     x_dexp = x/rate
     y_dexp = y/rate
     popt, pcov = curve_fit(double_exp, x_dexp, y_dexp,maxfev=500000)
-    print("所得双指数函数形式为：%fexp(%f*x)+%fexp(%f*x)"%(popt[0],popt[1],popt[2],popt[3]))
+    # print("所得双指数函数形式为：%fexp(%f*x)+%fexp(%f*x)"%(popt[0],popt[1],popt[2],popt[3]))
     x_inter = np.linspace(0,x_dexp[7],1000)
     y_inter = double_exp(x_inter,popt[0],popt[1],popt[2],popt[3]) #拟合y值
     # E = integral(0, x_inter[-1])
@@ -90,7 +90,7 @@ for i in range(circle):
 
     integral,error = integrate.quad(func,0, x_inter[-1])
     E = integral*((rate)**2)
-    print("第%d次的积分值%f"%(i+1,E))
+    # print("第%d次的积分值%f"%(i+1,E))
     sheet1.write(i+1,10,E)
 
-f.save("Task1-samples\\spectrum1.xlsx") #保存文件
+f.save("Task1-samples\\spectrum_new2.xls") #保存文件
