@@ -14,10 +14,10 @@ from scipy.optimize import curve_fit
 import pandas as pd
 import math
 import random
+from scipy import integrate
 from matplotlib.ticker import FuncFormatter
-from sympy import * 
-# import sympy.integrals.manualintegrate
-# from scipy.integrate import tplquad,dblquad,quad
+# from sympy import * 
+from scipy import integrate
 
 
 binFile = open('E:\\PET\\数据集\\6BDM.samples','rb')
@@ -53,20 +53,36 @@ def double_exp(x,a,b,c,d):
 ##########################################
 # 定义原始数据x、y的散点坐标
 circle = 1  # 是否需要多组数据共同拟合曲线，增加曲线拟合的准确性
+x = squares[0:8*circle]
+x = np.array(x)
+print('x的坐标:',x)
+
+num = [40,110,180,270,270,180,110,40]
+y = np.array(num*circle)
+print('y的坐标:',y)
+
+plt.rcParams['font.family'] = ['Times New Roman']
+plt.figure("原始数据散点图")
+plt.plot(x, y, 's',label='original values')
+plt.xlabel('Time(ns)')
+plt.ylabel('Voltage(mv)')
+plt.legend() 
+plt.title('Sampling scatter diagram of scintillation pulse')
+
+circle = 1  # 是否需要多组数据共同拟合曲线，增加曲线拟合的准确性
 global rate 
 rate = 1000 # 将单位进行放缩
 num = [40,110,180,270,270,180,110,40]
 y = np.array(num*circle)
 
 
-for i in range(circle):
-    x = squares[8*(circle-1):8*circle]
-    x = np.array(x)
-    x_dexp = x/rate
-    y_dexp = y/rate 
-    popt, pcov = curve_fit(double_exp, x_dexp, y_dexp)
 
-
+x = squares[8*(circle-1):8*circle]
+x = np.array(x)
+x_dexp = x/rate
+y_dexp = y/rate 
+global popt
+popt, pcov = curve_fit(double_exp, x_dexp, y_dexp)
 
 ##########################################
 # 双指数曲线拟合
@@ -134,13 +150,11 @@ plt.legend()
 # 计算脉冲积分，脉冲电压值对时间的积分
 # 蒙特卡洛方法
 ##########################################
-
 '''
-x = symbols('x')
-E = integrate(popt[1]*np.exp(popt[2]*x)+popt[3]*np.exp(d*x), (x, 0, x_inter[-1]))
-# 似乎对指数无法求积分，待解决！！
+x = symbols("x")
+E = integrate((popt[0]*np.exp(popt[1]*x)+popt[2]*np.exp(popt[3]*x)), (x, 0, x_inter[-1])))
+# sympy 无法对exp进行求积分
 '''
-
 def monto(x,a,b):
     """
     # a,b为求取积分的上下限
@@ -153,30 +167,13 @@ def integral(a,b):
     """
     return double_exp(b,popt[0],popt[1],popt[2],popt[3]) - double_exp(a,popt[0],popt[1],popt[2],popt[3])
 
+def f(x):
+    return popt[0]*np.exp(popt[1]*x)+popt[2]*np.exp(popt[3]*x)
 
-##########################################
-# 对前10组数据进行能谱分析
-##########################################
-cycle = 100
-
-for i in range(cycle):
-    poly_func = poly[i*68:(i+1)*68]
-    y_poly = struct.unpack('<hhdddddddd', poly_func)
-    # print(c)
-    for j in range(2,10): 
-        squares.append(y_poly[j]-y_poly[2])
-
-
-E = integral(0, x_inter[-1])*((rate)**2)
-
-print("积分结果：",E)
-
-
-
-
-
-
-
-
+# E = integral(0, x_inter[-1])
+# E = integrate.quad(double_exp(x,popt[0],popt[1],popt[2],popt[3]),0,1)
+print((integrate.quad(f,0, x_inter[-1])))
+# E = E*((rate)**2)
+# print("积分结果：",E)
 
 plt.show()

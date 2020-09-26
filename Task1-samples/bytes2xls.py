@@ -11,8 +11,13 @@ import xlwt
 
 f = xlwt.Workbook()
 sheet1 = f.add_sheet(u'sheet1',cell_overwrite_ok=True)
-
-
+'''
+row0 = ''
+column0 = [u'nB',u'nC',u'T1',u'T2',u'T3',u'T4',u'T5',u'T6',u'T7',u'T8']
+status = ''
+for i in range(0,len(row0)):
+    sheet1.write(0,i,row0[i],('Times New Roman',220,True))
+'''
 '''
 binFile=open('cy.samples','rb')
 a=binFile.read()
