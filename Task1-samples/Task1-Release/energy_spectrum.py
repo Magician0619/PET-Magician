@@ -31,26 +31,36 @@ for i in range(0,len(row0)):
 binFile = open('E:\\PET\\数据集\\6BDM.samples','rb')
 poly = binFile.read()
 print("字节长度：",len(poly))
-circle = int(len(poly)/68)+1
-print("帧数：",circle-1)
+frame = int(len(poly)/68)+1
+print("帧数：",frame-1)
 
-circle = 10000  # 分析前100组数据 
+circle = 5000  # 分析前100组数据 
 
 global x_rate, y_rate 
 global popt
-x_rate = 1 # 将单位进行放缩
-y_rate = 1000 # 将单位进行放缩
+global space
+x_rate = 1 # 将x单位进行放缩
+y_rate = 1000 # 将y单位进行放缩
+space = 2000
 popt = []
 num = [40,110,180,270,270,180,110,40]
 y = np.array(num)
 
 
 
-def double_exp(x,a,b,c,d):
-    '''
-    双指数函数曲线
-    '''
-    return  a*np.exp(b*(x-c))*(1-np.exp(d*(x-c)))
+def double_exp(x,a,b,d):
+    """双指数函数
+    参数:
+    ------------
+    x : float
+        当前时间与脉冲发生时间的差值
+    a : float
+        由脉冲幅度决定
+    b, d: float
+        由脉冲的上升和下降时间决定
+    """
+    return  a*np.exp(b*(x))*(1-np.exp(d*(x)))
+
 def monto(x,a,b):
     """
     # a,b为求取积分的上下限
@@ -64,34 +74,39 @@ def integral(a,b):
     return double_exp(b,popt[0],popt[1],popt[2],popt[3]) - double_exp(a,popt[0],popt[1],popt[2],popt[3])
 
 def func(x):
-    return popt[0]*np.exp(popt[1]*x)+popt[2]*np.exp(popt[3]*x)
+    return popt[0]*np.exp(popt[1]*(x))*(1-np.exp(popt[2]*(x)))
 
 
 for i in range(circle):
     poly_func = poly[i*68:(i+1)*68]
     content = struct.unpack('<hhdddddddd', poly_func)
     x_list = []
-    # print(c)
+
+
     for k in range(2):
         sheet1.write(i+1,k,content[k]) 
+
     for m in range(2,10):
         x_list.append(float(content[m]))
+
     for j in range(8): 
         x_list[:] = [x - x_list[0] for x in x_list]
         sheet1.write(i+1,j+2,x_list[j])
+
     x = np.array(x_list)
     x_dexp = x/x_rate
     y_dexp = y/y_rate
-    popt, pcov = curve_fit(double_exp, x_dexp, y_dexp,maxfev=500000)
-    # print("所得双指数函数形式为：%fexp(%f*x)+%fexp(%f*x)"%(popt[0],popt[1],popt[2],popt[3]))
-    x_inter = np.linspace(0,x_dexp[7],1000)
-    y_inter = double_exp(x_inter,popt[0],popt[1],popt[2],popt[3]) #拟合y值
-    # E = integral(0, x_inter[-1])
-    # E = integrate.quad(double_exp(x,popt[0],popt[1],popt[2],popt[3]),0, x_inter[-1])
+
+    bounds = ([-1000,-2,0],[0,0,2])
+    popt, pcov = curve_fit(double_exp, x_dexp, y_dexp, bounds = bounds, maxfev=500000)
+
+    # print("第%d帧数据所得双指数函数形式为：%f*exp(%f*(x))*(1-exp(%f*(x)))"%(i+1,popt[0],popt[1],popt[2]))
+    x_inter = np.linspace(min(x_dexp),max(x_dexp),space)*x_rate
+    y_inter = func(x_inter)*y_rate
 
     integral,error = integrate.quad(func,0, x_inter[-1])
     E = integral*x_rate*y_rate
-    # print("第%d次的积分值%f"%(i+1,E))
+    # print("第%d次的积分值为：%f"%(i+1,E))
     sheet1.write(i+1,10,E)
 
-f.save("Task1-samples\\spectrum_new4.xls") #保存文件
+f.save("Task1-samples\\spectrum_5000.xls") #保存文件

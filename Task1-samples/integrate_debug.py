@@ -20,13 +20,6 @@ from matplotlib.ticker import FuncFormatter
 from scipy import integrate
 from scipy.optimize import curve_fit
 
-f = xlwt.Workbook()
-sheet1 = f.add_sheet(u'sheet1',cell_overwrite_ok=True)
-row0 = [u'nB',u'nC',u'T1',u'T2',u'T3',u'T4',u'T5',u'T6',u'T7',u'T8',u'Energy']
-column = ''
-status = ''
-for i in range(0,len(row0)):
-    sheet1.write(0,i,row0[i])
 
 binFile = open('E:\\PET\\数据集\\6BDM.samples','rb')
 poly = binFile.read()
@@ -34,7 +27,7 @@ print("字节长度：",len(poly))
 circle = int(len(poly)/68)+1
 print("帧数：",circle-1)
 
-circle = 10000  # 分析前100组数据 
+circle = 10  # 分析前100组数据 
 
 global x_rate, y_rate 
 global popt
@@ -72,13 +65,10 @@ for i in range(circle):
     content = struct.unpack('<hhdddddddd', poly_func)
     x_list = []
     # print(c)
-    for k in range(2):
-        sheet1.write(i+1,k,content[k]) 
     for m in range(2,10):
         x_list.append(float(content[m]))
     for j in range(8): 
         x_list[:] = [x - x_list[0] for x in x_list]
-        sheet1.write(i+1,j+2,x_list[j])
     x = np.array(x_list)
     x_dexp = x/x_rate
     y_dexp = y/y_rate
@@ -89,9 +79,18 @@ for i in range(circle):
     # E = integral(0, x_inter[-1])
     # E = integrate.quad(double_exp(x,popt[0],popt[1],popt[2],popt[3]),0, x_inter[-1])
 
+    # added
+    plt.rcParams['font.family'] = ['Times New Roman']
+    # plt.rcParams.update({'font.size': 8})
+    plt.figure("双指数插值曲线")
+    plt.plot(x_inter, y_inter, 'r',label='polyfit values')
+    # plt.plot(x, y, 's',label='original values')
+    plt.title('Double exponential interpolation curve')
+    plt.xlabel('Time(ns)')
+    plt.ylabel('Voltage(mv)')
+
     integral,error = integrate.quad(func,0, x_inter[-1])
     E = integral*x_rate*y_rate
-    # print("第%d次的积分值%f"%(i+1,E))
-    sheet1.write(i+1,10,E)
+    print("第%d次的积分值%f"%(i+1,E))
 
-f.save("Task1-samples\\spectrum_new4.xls") #保存文件
+    plt.show()
