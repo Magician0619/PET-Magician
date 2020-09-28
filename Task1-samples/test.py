@@ -1,13 +1,10 @@
+import pylab as pl
 import numpy as np
-a = [1,2,3,4]
-a = np.array(a)
-b = []
-b = np.array(b)
-a = a.astype(float)
-for i in range(len(a)-1):
-    c = 0.5*(a[i]+a[i+1])
-    b = np.append(b,c)
+
+a = [1,5,6,52,63,84,95,67,89] 
+b = np.append(a,1)
 print(b)
-print(a)
-c = [4,5,6,7]
-print(np.mean(a)) 
+bins = np.linspace(0,100,20)
+
+pl.hist(a,bins)
+pl.show()
