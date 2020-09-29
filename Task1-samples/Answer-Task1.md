@@ -2,7 +2,7 @@
 > 数据下载地址：链接: https://pan.baidu.com/s/1vlh6rLdmQAU_ePxIN7blDg  密码: flch
 > 
 > 数据的电压采样阈值为：V1=40、V2=110、V3=180、V4=270
-
+[TOC]
 # 1、读取二进制Samples文件
 
 .samples文件是二进制的文件，可以使用python的BufferedIOBase.read(size: int) -> bytes函数进行读取。这里面，我们定义每一个事件为544bits，为一帧。将数据提取出来之后，利用unpack函数进行解包。
@@ -73,19 +73,19 @@ def double_exp(x,a,b,d):
 
 ```python
 bounds = ([-2,-2,0],[0,0,2])
-    popt, pcov = curve_fit(double_exp, x_dexp, y_dexp, bounds = bounds, maxfev=500000)
-    # popt, pcov = curve_fit(double_exp, x_dexp, y_dexp, maxfev=500000)
+popt, pcov = curve_fit(double_exp, x_dexp, y_dexp, bounds = bounds, maxfev=500000)
+# popt, pcov = curve_fit(double_exp, x_dexp, y_dexp, maxfev=500000)
 
-    '''scipy模块的子模块optimize中提供的一个专门用于曲线拟合的函数curve_fit()
-    # 官方详解链接：https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html#scipy-optimize-curve-fit
-    # popt：阵列参数的最佳值，以使（扩展数据，*popt）-ydata平方残差之和最小。
-    # pcov：二维阵列popt的估计协方差，对角线提供参数估计的方差。
-    # perr = np.sqrt(np.diag(pcov))，使用perr计算参数的一个标准偏差误差。
-    # bounds：参数的上下限。默认为无边界。元组的每个元素必须是长度等于参数数的数组，或者是标量（在这种情况下，所有参数的界限都是相同的）。
-    # maxfev：拟合次数上限。
-    '''
+'''scipy模块的子模块optimize中提供的一个专门用于曲线拟合的函数curve_fit()
+# 官方详解链接：https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html#scipy-optimize-curve-fit
+# popt：阵列参数的最佳值，以使（扩展数据，*popt）-ydata平方残差之和最小。
+# pcov：二维阵列popt的估计协方差，对角线提供参数估计的方差。
+# perr = np.sqrt(np.diag(pcov))，使用perr计算参数的一个标准偏差误差。
+# bounds：参数的上下限。默认为无边界。元组的每个元素必须是长度等于参数数的数组，或者是标量（在这种情况下，所有参数的界限都是相同的）。
+# maxfev：拟合次数上限。
+'''
 
-    print("所得双指数函数形式为：%f*exp(%f*(x))*(1-exp(%f*(x)))"%(popt[0],popt[1],popt[2]))
+print("所得双指数函数形式为：%f*exp(%f*(x))*(1-exp(%f*(x)))"%(popt[0],popt[1],popt[2]))
 ```
 
 为了调整参数范围，使用断言对参数进行观察调整
@@ -148,6 +148,9 @@ def assert_popt(popt,bounds,num):
 
 也可以直接将能量积分值追加列表绘制直方图。
 
+
+[![能谱直方图](https://s1.ax1x.com/2020/09/30/0mGTHg.png)](https://imgchr.com/i/0mGTHg)
+
 # 5、对能谱归一化
 
 对能谱$S(t)$来说，设其中的最大值为$S_{max}$利用线性标准化进行归一化到511kev即：
@@ -157,7 +160,7 @@ $$S(t)_{normal} = S(t)\frac{511}{S_{max}}$$
 
 在归一化后可以得到事件能谱图如下：
 
-[![能谱直方图](https://s1.ax1x.com/2020/09/27/0FnpnO.png)](https://imgchr.com/i/0FnpnO)
+[![能谱归一化图](https://s1.ax1x.com/2020/09/30/0mGoDS.png)](https://imgchr.com/i/0mGoDS)
 
 
 # 6、高斯拟合
@@ -173,7 +176,7 @@ def gaussian_2(x,*param):
            param[1]*np.exp(-np.power(x - param[3], 2.) / (2 * np.power(param[5], 2.)))
 ```
 
-[![高斯拟合图像](https://s1.ax1x.com/2020/09/27/0Fn14s.png)](https://imgchr.com/i/0Fn14s)
+[![高斯拟合图像](https://s1.ax1x.com/2020/09/30/0mGHEQ.png)](https://imgchr.com/i/0mGHEQ)
 
 # 7、计算能量分辨率
 探测器的能量分辨率（Energy resolution of a detector)，表示线性探测器区分被探测粒子能量的能力的一个量。能量分辨率的分子是全能峰的半宽度，分母是全能峰能量的期望值。
@@ -182,6 +185,7 @@ def gaussian_2(x,*param):
 
 若不能忽略除探测器以外的其它因素对半高宽的影响，则应以平方相减的方法扣除这部分的影响，求出真正的探测器的半高宽：其中<ERR>为总的半高宽，<ERR>为除探测器以外部分引起的半高宽；AEn为探测器引起的半高宽。为使所测得的半高宽结果可信，必须在所测谱线中保证半高宽所占道数大于5道。由于半高宽与辐射能量有直接关系，因此，在给定能量分辨率时必须给出所对应的辐射能量。并要保证被测辐射的能量基本上全都损耗在探测器灵敏体积内。
 
+能谱的两个峰里面左边那个峰是散射产生的峰，所以在计算能量分辨率的时候是要把左边这个峰去掉只用右边这个真实事件的峰来计算的，所以只需要对右边这个峰做高斯算半高全宽
 
 
 
