@@ -48,7 +48,7 @@ popt = []
 popt_dict = ['a','b','d']
 num = [40,110,180,270,270,180,110,40]
 y = np.array(num)
-bounds = ([-1000,-2,0],[0,0,2])
+bounds = ([-500,-2,0],[0,0,2])
 
 
 def double_exp(x,a,b,d):
@@ -142,6 +142,7 @@ for i in range(circle):
 
         # 对错误数据修改成为固定的平均积分值
         sheet1.write(i+1,10,21875.05167)
+        # 22029.78739
 
     
 

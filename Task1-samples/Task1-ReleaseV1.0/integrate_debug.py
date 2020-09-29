@@ -75,7 +75,7 @@ def axis_x(temp,position):
 def axis_y(temp,position):
     return '%f'%(y_rate*temp)
 
-for i in range(34568,circle):
+for i in range(9949,circle):
 
     poly_func = poly[i*68:(i+1)*68]
     content = struct.unpack('<hhdddddddd', poly_func)

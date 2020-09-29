@@ -23,7 +23,7 @@ print("字节长度：",len(poly))
 frame = int(len(poly)/68)+1
 print("帧数：",frame-1)
 
-circle = 65000  # 分析多少组数据 （.xls文件的上限是65536）
+circle = 65  # 分析多少组数据 （.xls文件的上限是65536）
 
 global x_rate, y_rate 
 global popt,popt_dict
@@ -90,11 +90,7 @@ def draw_hist(lenths):
 
     n, bins, patches = pl.hist(data,bins)
     
-    # 绘制直方图
-    pl.xlabel('Energy')
-    pl.ylabel('Counts')
-    pl.title('The energy spectra and coincidence-time histograms')
-    pl.show()
+
 
     # 绘制高斯拟合图
     # bins比n多一个数
@@ -106,24 +102,19 @@ def draw_hist(lenths):
         temp = 0.5*(bins[i]+bins[i+1])
         guass_x = np.append(guass_x,temp)
     popt,pcov = curve_fit(gaussian_2,guass_x,guass_y,p0=[70,80,60,120,20,20],maxfev = 140000)
-    plt.plot(guass_x,guass_y,'b+:',label='data')
-    plt.plot(guass_x,gaussian_2(guass_x,*popt),'ro:',label='fit')
-    plt.legend()
-    plt.show()
 
-    # 计算能量分辨率
-    global half_h_w1, half_h_w2,E_max
-    half_h_w1, half_h_w2 = 0,0
+    # 计算能量分辨率  
+    half_h_w_list = []
+    guass_x_point = 0
+    guass_x_point = np.linspace(min(guass_x),max(guass_x),50000)
     high = max(gaussian_2(guass_x,*popt))
     try:
         for x in guass_x:       
-            if(x<256|int(gaussian_2(x))==int(0.5*high)):
-                half_h_w1 = x
-            if(x<256|int(gaussian_2(x))==int(0.5*high)):
-                half_h_w2 = x
-            if(int(gaussian_2(guass_x)==high)):
-                E_max = x
-            half_h_w = half_h_w2-half_h_w1
+            if(int(gaussian_2(x))>int(0.5*high)):
+                half_h_w_list = np.append(half_h_w_list,x)
+            E_max = 511
+            
+            half_h_w = max(half_h_w_list)-min(half_h_w_list)
             eta = half_h_w/E_max
             print("能量分辨率为：",eta)
 
