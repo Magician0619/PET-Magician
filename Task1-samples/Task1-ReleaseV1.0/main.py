@@ -8,10 +8,12 @@
 Copyright 2020 by Magician
 '''
 
+from os import name
 import struct
 
 import matplotlib.pyplot as plt
 import numpy as np
+from numpy.lib.type_check import nan_to_num
 
 import pylab as pl
 from scipy import integrate
@@ -23,7 +25,7 @@ print("字节长度：",len(poly))
 frame = int(len(poly)/68)+1
 print("帧数：",frame-1)
 
-circle = 65  # 分析多少组数据 （.xls文件的上限是65536）
+circle = 6500  # 分析多少组数据 （.xls文件的上限是65536）
 
 global x_rate, y_rate 
 global popt,popt_dict
@@ -35,8 +37,8 @@ y_rate = 1000 # 将y单位进行放缩
 space = 2000
 popt = []
 popt_dict = ['a','b','d']
-num = [40,110,180,270,270,180,110,40]
-y = np.array(num)
+voltage_threshold = [40,110,180,270,270,180,110,40]
+y = np.array(voltage_threshold)
 bounds = ([-1000,-2,0],[0,0,2])
 
 Energy_list = []
@@ -45,8 +47,10 @@ global max_value,nomrmal
 max_value = 40000
 normal = 511
 global gx_rate,gy_rate
-gx_rate = 10
-gy_rate = 20
+gx_rate = 100
+gy_rate = 1600
+global bins_w
+bins_w = 1000
 
 def double_exp(x,a,b,d):
     """双指数函数
@@ -61,6 +65,11 @@ def double_exp(x,a,b,d):
     """
     return  a*np.exp(b*(x))*(1-np.exp(d*(x)))
 
+def gaussian_singletrue(x,*param):
+    '''
+    真实事件的高斯峰
+    '''
+    return param[1]*np.exp(-np.power(x - param[3], 2.) / (2 * np.power(param[5], 2.)))
 
 def gaussian_2(x,*param):
     '''二元高斯函数拟合过程
@@ -83,44 +92,54 @@ def assert_popt(popt,bounds,num):
     for i in range(3):
         assert (popt[i]!=bounds[0][i]), "参数%s下限值应该调整!!!\n第%d帧数据所得双指数函数形式为：%f*exp(%f*(x))*(1-exp(%f*(x)))"%(popt_dict[i],num+1,popt[0],popt[1],popt[2])
         assert (popt[i]!=bounds[1][i]), "参数%s上限值应该调整!!!\n第%d帧数据所得双指数函数形式为：%f*exp(%f*(x))*(1-exp(%f*(x)))"%(popt_dict[i],num+1,popt[0],popt[1],popt[2])
+
 def draw_hist(lenths):
-    data = lenths/max_value*normal  # 对数据归一化
-    bins = np.linspace(min(data),600,200)
-
-
-    n, bins, patches = pl.hist(data,bins)
     
+    # 绘制直方图
+    bins1 = np.linspace(min(lenths),max(lenths),bins_w)
+    n1, bins1, patches1 = pl.hist(lenths,bins1)
 
+    # 能谱归一化
+    n12 = n1.tolist()
+    frequent_index = n12.index(max(n12)) 
+    data = lenths*511/(0.5*(bins1[frequent_index]+bins1[frequent_index+1]))
+    bins2 = np.linspace(min(data),max(data),bins_w)
+    n2, bins2, patches2 = pl.hist(data,bins2)
 
     # 绘制高斯拟合图
     # bins比n多一个数
     # bins = np.delete(bins,-1) # 方法一：去除列表最后面的一个数
     guass_x = []
     guass_x = np.array(guass_x)
-    guass_y = n
-    for i in range(len(bins)-1):    #方法二：bins需要取矩形两端端点的均值
-        temp = 0.5*(bins[i]+bins[i+1])
+    guass_y = n2
+    for i in range(len(bins2)-1):    #方法二：bins需要取矩形两端端点的均值
+        temp = 0.5*(bins2[i]+bins2[i+1])
         guass_x = np.append(guass_x,temp)
-    popt,pcov = curve_fit(gaussian_2,guass_x,guass_y,p0=[70,80,60,120,20,20],maxfev = 140000)
+    popt,pcov = curve_fit(gaussian_2,guass_x/gx_rate,guass_y/gy_rate,p0=[3,4,3,6,1,1],maxfev = 140000)
 
-    # 计算能量分辨率  
+    plt.figure("高斯拟合图")
+    plt.plot(guass_x,guass_y,'b*:',label='data')
+    plt.plot(guass_x,gaussian_2(guass_x/gx_rate,*popt)*gy_rate,'r',label='fit')
+    plt.legend()
+    plt.show()
+    print("高斯拟合的参数：",*popt)
+
+    # 计算能量分辨率
+    # 将大于半高度的横坐标保存下来，并追加列表，计算列表中首尾两项的差值
+
+    global half_h_w_list
     half_h_w_list = []
-    guass_x_point = 0
-    guass_x_point = np.linspace(min(guass_x),max(guass_x),50000)
-    high = max(gaussian_2(guass_x,*popt))
-    try:
-        for x in guass_x:       
-            if(int(gaussian_2(x))>int(0.5*high)):
-                half_h_w_list = np.append(half_h_w_list,x)
-            E_max = 511
-            
-            half_h_w = max(half_h_w_list)-min(half_h_w_list)
-            eta = half_h_w/E_max
-            print("能量分辨率为：",eta)
+    high = max(gaussian_singletrue(guass_x/gx_rate,*popt)*gy_rate)
+    for x in guass_x:       
+        if(int(gaussian_singletrue(x/gx_rate,*popt)*gy_rate)>int(0.5*high)):
+            half_h_w_list = np.append(half_h_w_list,x)
+    E_max = 511
+    
+    half_h_w = max(half_h_w_list)-min(half_h_w_list)
+    eta = half_h_w/E_max
+    print("能量分辨率为：",eta)
+    
 
-    except error:
-        print("报错了！！！")
-        pass
 
 for i in range(circle):
     poly_func = poly[i*68:(i+1)*68]

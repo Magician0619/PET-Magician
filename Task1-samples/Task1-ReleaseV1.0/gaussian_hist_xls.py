@@ -52,6 +52,12 @@ def gaussian(data):
     plt.title('Histogram : $\mu$=' + str(round(mu,2)) + ' $\sigma=$'+str(round(sigma,2)))  #中文标题 u'xxx' 
     #plt.subplots_adjust(left=0.15)#左边距 
 
+def gaussian_singletrue(x,*param):
+    '''
+    真实事件的高斯峰
+    '''
+    return param[1]*np.exp(-np.power(x - param[3], 2.) / (2 * np.power(param[5], 2.)))
+
 def gaussian_1(x,*param):
     return param[0]*np.exp(-np.power(x - param[2], 2.) / (2 * np.power(param[4], 2.)))
 
@@ -129,6 +135,7 @@ def draw_hist(lenths):
     '''
 
     # 将大于半高度的横坐标保存下来，并追加列表，计算列表中首尾两项的差值
+    '''双峰融合版
     global half_h_w_list
     half_h_w_list = []
     high = max(gaussian_2(guass_x/gx_rate,*popt)*gy_rate)
@@ -140,7 +147,18 @@ def draw_hist(lenths):
     half_h_w = max(half_h_w_list)-min(half_h_w_list)
     eta = half_h_w/E_max
     print("能量分辨率为：",eta)
+    '''
+    global half_h_w_list
+    half_h_w_list = []
+    high = max(gaussian_singletrue(guass_x/gx_rate,*popt)*gy_rate)
+    for x in guass_x:       
+        if(int(gaussian_singletrue(x/gx_rate,*popt)*gy_rate)>int(0.5*high)):
+            half_h_w_list = np.append(half_h_w_list,x)
+    E_max = 511
     
+    half_h_w = max(half_h_w_list)-min(half_h_w_list)
+    eta = half_h_w/E_max
+    print("能量分辨率为：",eta)
     
     '''    
     high = max(gaussian_2(guass_x,*popt))

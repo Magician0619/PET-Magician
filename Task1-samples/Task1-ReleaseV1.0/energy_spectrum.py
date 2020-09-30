@@ -130,7 +130,7 @@ for i in range(circle):
         print(popt)
         print("第%d帧数据所得双指数函数形式为：%f*exp(%f*(x))*(1-exp(%f*(x)))"%(i+1,popt[0],popt[1],popt[2]))
         # break
-        # 目前已发现第6042组数据存在问题
+        
 
         assert_popt(popt,bounds,i)
         x_inter = np.linspace(min(x_dexp),max(x_dexp),space)*x_rate
