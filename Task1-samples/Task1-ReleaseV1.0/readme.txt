@@ -12,19 +12,13 @@ scipy Version: 1.4.1
 
 
 #### Directory structure 
-|—
 │      
+│ 
 └─Task1-ReleaseV1.0 
-        energy_spectrum.py  # 求解能量积分
-        gaussian_hist.py    # 
-        integrate_debug.py
+        energy_spectrum.py      # 求解能量积分，并保存Excel文件
+        gaussian_hist.py        # 利用转换得到的csv文件绘制高斯直方图
+        integrate_debug.py      # 绘制某一帧数据的双指数拟合曲线，并求取积分值，并设定规则加以修改
         readme.txt
-        spectrum_65000_2020-09-28.xls
+        spectrum_65000_2020-09-29.xls   # 前65000帧数据的详细信息
+        energy_2020-09-29.csv           # 前65000帧数据的积分结果
 
-
-
-###########V1.0.0 版本内容更新
-1. 新功能     aaaaaaaaa
-2. 新功能     bbbbbbbbb
-3. 新功能     ccccccccc
-4. 新功能     ddddddddd
