@@ -6,7 +6,7 @@ int main(int argc, char** argv) {
 	int fileType = RLFILTER;
 
 	//读取图像
-	Mat  origin = imread("C:\\Users\\xinzhiqiang\\Desktop\\1111\\FBP_3\\FBP_3\\FBP_3\\SL_512.png", 0);
+	Mat  origin = imread("/home/magician/Documents/PET-Magician/Task2-FBP/CT.jpg", 0);
 
 	if (origin.empty()) {
 
