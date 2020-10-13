@@ -1,0 +1,97 @@
+ValueError: Residuals are not finite in the initial point.
+[-1.09787176 -0.15593434  0.12379763]
+第6042帧数据所得双指数函数形式为：-1.097872*exp(-0.155934*(x))*(1-exp(0.123798*(x)))
+ValueError: Residuals are not finite in the initial point.
+[-2.73394015 -0.10065039  0.04984827]
+第6250帧数据所得双指数函数形式为：-2.733940*exp(-0.100650*(x))*(1-exp(0.049848*(x)))
+ValueError: Residuals are not finite in the initial point.
+[-1.09527572 -0.16930975  0.12981425]
+第7045帧数据所得双指数函数形式为：-1.095276*exp(-0.169310*(x))*(1-exp(0.129814*(x)))
+ValueError: Residuals are not finite in the initial point.
+[-1.01581372 -0.19415483  0.1576897 ]
+第8491帧数据所得双指数函数形式为：-1.015814*exp(-0.194155*(x))*(1-exp(0.157690*(x)))
+ValueError: Residuals are not finite in the initial point.
+[-1.05694344 -0.16165901  0.12311662]
+第8791帧数据所得双指数函数形式为：-1.056943*exp(-0.161659*(x))*(1-exp(0.123117*(x)))
+ValueError: Residuals are not finite in the initial point.
+[-1.25296655 -0.22576416  0.18375162]
+第9422帧数据所得双指数函数形式为：-1.252967*exp(-0.225764*(x))*(1-exp(0.183752*(x)))
+ValueError: Residuals are not finite in the initial point.
+[-1.04618156 -0.16444673  0.12852808]
+第13918帧数据所得双指数函数形式为：-1.046182*exp(-0.164447*(x))*(1-exp(0.128528*(x)))
+1314.5599999999997
+ValueError: Residuals are not finite in the initial point.
+s are not finite in the initial point.
+[-1.09319854 -0.18751616  0.14955925]
+第23835帧数据所得双指数函数形式为：-1.093199*exp(-0.187516*(x))*(1-exp(0.149559*(x)))
+ValueError: Residuals are not finite in the initial point.
+[-1.72347102 -0.14977778  0.10705557]
+第26259帧数据所得双指数函数形式为：-1.723471*exp(-0.149778*(x))*(1-exp(0.107056*(x)))
+ValueError: Residuals are not finite in the initial point.
+[-0.9630864  -0.21115555  0.1742256 ]
+第26381帧数据所得双指数函数形式为：-0.963086*exp(-0.211156*(x))*(1-exp(0.174226*(x)))
+ValueError: Residuals are not finite in the initial point.
+[-1.33289304 -0.13975624  0.10437664]
+第29380帧数据所得双指数函数形式为：-1.332893*exp(-0.139756*(x))*(1-exp(0.104377*(x)))
+ValueError: Residuals are not finite in the initial point.
+[-0.92812797 -0.25570265  0.22325328]
+第29505帧数据所得双指数函数形式为：-0.928128*exp(-0.255703*(x))*(1-exp(0.223253*(x)))
+ValueError: Residuals are not finite in the initial point.
+[-1.09857667 -0.17201987  0.13670655]
+第35654帧数据所得双指数函数形式为：-1.098577*exp(-0.172020*(x))*(1-exp(0.136707*(x)))
+ValueError: Residuals are not finite in the initial point.
+[-1.79558715 -0.18510639  0.13879732]
+第36930帧数据所得双指数函数形式为：-1.795587*exp(-0.185106*(x))*(1-exp(0.138797*(x)))
+ValueError: Residuals are not finite in the initial point.
+[-1.55859146 -0.16260073  0.11871523]
+第37024帧数据所得双指数函数形式为：-1.558591*exp(-0.162601*(x))*(1-exp(0.118715*(x)))
+ValueError: Residuals are not finite in the initial point.
+[-1.96442178 -0.14012399  0.09268242]
+第37581帧数据所得双指数函数形式为：-1.964422*exp(-0.140124*(x))*(1-exp(0.092682*(x)))
+ValueError: Residuals are not finite in the initial point.
+[-1.08743591 -0.13677434  0.10365785]
+第39647帧数据所得双指数函数形式为：-1.087436*exp(-0.136774*(x))*(1-exp(0.103658*(x)))
+ValueError: Residuals are not finite in the initial point.
+[-3.7930974  -0.08673319  0.03529257]
+第41384帧数据所得双指数函数形式为：-3.793097*exp(-0.086733*(x))*(1-exp(0.035293*(x)))
+ValueError: Residuals are not finite in the initial point.
+[-4.20053356e+02 -6.67210707e-02  2.78846260e-04]
+第45390帧数据所得双指数函数形式为：-420.053356*exp(-0.066721*(x))*(1-exp(0.000279*(x)))
+ValueError: Residuals are not finite in the initial point.
+[-3.766354   -0.10654926  0.05084806]
+第46930帧数据所得双指数函数形式为：-3.766354*exp(-0.106549*(x))*(1-exp(0.050848*(x)))
+ValueError: Residuals are not finite in the initial point.
+[-2.99561655 -0.10684324  0.05266031]
+第49392帧数据所得双指数函数形式为：-2.995617*exp(-0.106843*(x))*(1-exp(0.052660*(x)))
+ValueError: Residuals are not finite in the initial point.
+[-1.04885152 -0.20736156  0.16790324]
+第49532帧数据所得双指数函数形式为：-1.048852*exp(-0.207362*(x))*(1-exp(0.167903*(x)))
+ValueError: Residuals are not finite in the initial point.
+[-2.38323519 -0.90145649  0.21317457]
+第51775帧数据所得双指数函数形式为：-2.383235*exp(-0.901456*(x))*(1-exp(0.213175*(x)))
+ValueError: Residuals are not finite in the initial point.
+[-4.61233583 -0.10378797  0.04447917]
+第54173帧数据所得双指数函数形式为：-4.612336*exp(-0.103788*(x))*(1-exp(0.044479*(x)))
+ValueError: Residuals are not finite in the initial point.
+[-1.68924913 -0.13938016  0.09436329]
+第54445帧数据所得双指数函数形式为：-1.689249*exp(-0.139380*(x))*(1-exp(0.094363*(x)))
+ValueError: Residuals are not finite in the initial point.
+[-0.9365     -0.17895245  0.14686131]
+第56769帧数据所得双指数函数形式为：-0.936500*exp(-0.178952*(x))*(1-exp(0.146861*(x)))
+ValueError: Residuals are not finite in the initial point.
+[-1.36048834 -0.09883299  0.06003214]
+第57330帧数据所得双指数函数形式为：-1.360488*exp(-0.098833*(x))*(1-exp(0.060032*(x)))
+[-2.14999447 -0.07531876  0.03009198]
+第59283帧数据所得双指数函数形式为：-2.149994*exp(-0.075319*(x))*(1-exp(0.030092*(x)))
+ValueError: Residuals are not finite in the initial point.
+[-2.48656915 -0.10368232  0.05615782]
+第60077帧数据所得双指数函数形式为：-2.486569*exp(-0.103682*(x))*(1-exp(0.056158*(x)))
+ValueError: Residuals are not finite in the initial point.
+[-0.83079551 -0.19360413  0.15550937]
+第60731帧数据所得双指数函数形式为：-0.830796*exp(-0.193604*(x))*(1-exp(0.155509*(x)))
+ValueError: Residuals are not finite in the initial point.
+[-3.87688103e+02 -7.43285009e-02  2.71155716e-04]
+第61249帧数据所得双指数函数形式为：-387.688103*exp(-0.074329*(x))*(1-exp(0.000271*(x)))
+ValueError: Residuals are not finite in the initial point.
+[-0.70775029 -0.12318164  0.0841894 ]
+第62908帧数据所得双指数函数形式为：-0.707750*exp(-0.123182*(x))*(1-exp(0.084189*(x)))
