@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[dev-packages]
+twine = "*"
+coverage = "*"
+"flake8" = "*"
+tox = "*"
+readme-renderer = "*"
+sphinx = "*"
+flask-sphinx-themes = "*"
+"e1839a8" = {path = ".", editable = true}
+
+[packages]
+
+[requires]
+python_version = "2.7"

@@ -1,0 +1,2 @@
+graft flask_share/static
+include LICENSE test_flask_share.py
