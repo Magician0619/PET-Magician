@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flask上传图片演示</title>
+</head>
+<body>
+    <h1>使用Flask上传dicom文件并显示</h1>
+    <form action="" enctype='multipart/form-data' method='POST'>
+        <input type="file" name="file" style="margin-top:20px;"/>
+        <br>
+        <i>请输入你当前传输的文件类型：A.dicom文件；B.PNG图片；C.其他类型文件</i>
+        <input type="text" class="txt_input" name="name"  value="dicom文件" style="margin-top:10px;"/>
+        <input type="submit" value="上传" class="button-new" style="margin-top:15px;"/>
+    </form>
+    <h1>上传的文件类型是：{{userinput}}！</h1>
+    <img src="{{ url_for('static', filename= '../static/uploads/show.png',_t=val1) }}" width="400" height="400" alt="你的图片被外星人劫持了～～"/>
+</body>
+</html>
